@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fila da API Niloweb</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f7f7f7;
+    }
+    .container {
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    th, td {
+        padding: 10px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+    th {
+        background-color: #f2f2f2;
+    }
+    tbody tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+    tbody tr:hover {
+        background-color: #f2f2f2;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Transit</h1>
+    <table id="fila">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Hora</th>
+                <th>Data</th>
+                <th>Motivo</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    function carregarFila() {
+        fetch('https://niloweb.com.br/transit-room/api/reg_endpoint_all.php')
+            .then(response => response.json())
+            .then(data => {
+                const filaTable = document.getElementById('fila');
+                const tbody = filaTable.querySelector('tbody');
+                tbody.innerHTML = '';
+
+                data.forEach(item => {
+                    const row = tbody.insertRow();
+                    row.innerHTML = `<td>${item.nome}</td><td>${item.hora}</td><td>${item.data}</td><td>${item.motivo}</td>`;
+                });
+            })
+            .catch(error => {
+                console.error('Erro ao carregar a fila:', error);
+            });
+    }
+
+    window.onload = carregarFila;
+</script>
+
+</body>
+</html>
